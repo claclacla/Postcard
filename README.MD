@@ -2,6 +2,76 @@
 
 ## An abstraction layer over message brokers 
 
+This library, created for both languages `Javascript` and `Ruby`(https://rubygems.org/gems/postcard_rb), is an abstraction layer over `RabbitMQ`. 
+It allows the communication among the microservices, providing functionality for publishing and subscribing events.
+
+The microservices interact through topics created with one of three routing types: `Wide`, `Explicit` and `PatternMatching`. 
+
+Each topic may have multiple rooms and, according to the routing type, microservices exchange messages on a different way.
+
+#### Wide topic
+
+Each message published on a wide topic is received by each room connected to it.
+
+```ruby
+# Send a message
+
+topic = postcardRB.createTopic(name: "order", routing: Routing.Wide)
+topic.publish(payload: "Place a new order")
+
+# Receive a message
+
+topic = postcardRB.createTopic(name: "order", routing: Routing.Wide)
+room = topic.createRoom(name: "place")
+
+room.subscribe { |properties, payload|
+   puts " [x] Received #{payload}"
+}
+
+```
+
+#### Explicit topic
+
+For this kind of topic a message is published on an specific room using its exact name.
+ 
+```ruby
+# Send a message
+
+topic = postcardRB.createTopic(name: "order", routing: Routing.Explicit)
+topic.publish(room: "place", payload: "Place a new order")
+
+# Receive a message
+
+topic = postcardRB.createTopic(name: "order", routing: Routing.Explicit)
+room = topic.createRoom(name: "place")
+
+room.subscribe { |properties, payload|
+   puts " [x] Received #{payload}"
+}
+
+```
+
+#### Pattern matching topic
+
+Using a pattern matching routing, a microservice subscribe to a room based on matching between a message routing key and the pattern that was used to create that room.
+
+```ruby
+# Send a message
+
+topic = postcardRB.createTopic(name: "delivery", routing: Routing.PatternMatching)
+topic.publish(room: "sms.customers", payload: "Important news")
+
+# Receive a message
+
+topic = postcardRB.createTopic(name: "delivery", routing: Routing.PatternMatching)
+room = topic.createRoom(name: "sms.*")
+
+room.subscribe { |properties, payload|
+   puts " [x] Received #{payload}"
+}
+
+```
+
 --------------------------------------------------------------------------------
 
 ### Prerequisites
