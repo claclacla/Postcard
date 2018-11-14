@@ -23,4 +23,4 @@ end
 printExecutionTime
 
 topic = postcard.createTopic(name: "topic2", routing: Routing.Wide)
-topic.publish(payload: "Message for topic2/room2")
+topic.publish(payload: "Message for topic2")

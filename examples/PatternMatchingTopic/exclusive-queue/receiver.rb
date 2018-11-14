@@ -22,5 +22,14 @@ end
 
 printExecutionTime
 
-topic = postcard.createTopic(name: "topic2", routing: Routing.Wide)
-topic.publish(payload: "Message for topic2")
+topic = postcard.createTopic(name: "topic3", routing: Routing.PatternMatching)
+room = topic.createRoom(name: "room3.*", exclusive: true)
+
+room.subscribe { |properties, payload|
+   puts " [x] Received #{payload}"
+
+   duration = Random.rand(1...10)
+   puts "I'll sleep for " + duration.to_s + " s"
+   sleep duration
+   puts "Awaken!"
+}
