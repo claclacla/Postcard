@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'postcard_rb'
-  s.version     = '0.0.3'
+  s.version     = '0.0.4'
   s.date        = '2018-11-07'
   s.summary     = "PostcardRB"
   s.description = "An abstraction layer over message brokers"
