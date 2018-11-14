@@ -9,9 +9,10 @@ class PatternMatchingRabbitMQTopic < BaseRabbitMQTopic
     @exchange = @channel.topic(name, :durable => false)
   end  
 
-  def createRoom name:
+  def createRoom name:, exclusive: false
     room = PatternMatchingRabbitMQRoom.new(
       name: name,
+      exclusive: exclusive,
       channel: @channel,
       exchange: @exchange
     )
