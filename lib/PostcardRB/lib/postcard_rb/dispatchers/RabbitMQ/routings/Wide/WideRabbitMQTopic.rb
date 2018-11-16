@@ -9,10 +9,11 @@ class WideRabbitMQTopic < BaseRabbitMQTopic
     @exchange = @channel.fanout(name, :durable => false)
   end  
 
-  def createRoom name:, exclusive: false
+  def createRoom name:, exclusive: false, autoDelete: false
     room = WideRabbitMQRoom.new(
       name: name,
       exclusive: exclusive,
+      autoDelete: autoDelete,
       channel: @channel,
       exchange: @exchange
     )
